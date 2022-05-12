@@ -11,7 +11,7 @@ main:
   # - title: "Sitemap"
   #   url: /sitemap/
   - title: "About"
-    url: https://rogueEntity.github.io/minimal-mistakes/about/
+    url: /about/
   - title: "Category"
     url: /categories/
   - title: "Tag"
