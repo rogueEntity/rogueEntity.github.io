@@ -9,8 +9,7 @@ toc: true
 
 ## Profile
 - Rogue Entity
----
+
 ## Into
 - MSA
 - Flutter
----
