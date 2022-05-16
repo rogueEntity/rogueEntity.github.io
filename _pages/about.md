@@ -8,4 +8,9 @@ toc: true
 <br/>
 
 ## Profile
+- Rogue Entity
+---
+## Into
+- MSA
+- Flutter
 ---

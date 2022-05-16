@@ -103,7 +103,7 @@ analytics:
 # Site Author
 author:
   name             : "rogueEntity"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  avatar           : "/assets/images/profile/Raven01.jpg" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "Coal lit."
   location         : "Seoul, South Korea"
   email            :
