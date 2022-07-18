@@ -151,6 +151,14 @@ $ vim config.conf
 
 powerlevel 테마에서 instant prompt라는 옵션이 있는데, 이걸 verbose에서 off로 바꿔줌. Powerlevel10k는 속도 때문에 비동기로 처리되는 부분이 많은데, 동기 처리되는 작업 때문에 생기는 시동 지연시간을 없애고자 존재하는 옵션임. ASCII 로고 대신 이미지를 쓴다던가 하면 이것 때문에 똑바로 동작하지 않는 경우가 생김.
 
+### Git Setting
+```sh
+$ git config --global user.name "name"
+$ git config --global user.email "email"
+$ git config --list
+```
+→ git은 거의 github desktop을 통해서 사용하게 될 것 같지만, 일단 설정해줌
+
 ### Programs
 - Homebrew List
 - Mac AppStore
