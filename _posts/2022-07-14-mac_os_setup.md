@@ -3,7 +3,7 @@ title:  "Mac OS Setup"
 excerpt: "개인용 맥북 셋업 가이드."
 
 date: 2022-07-14
-last_modified_at: 2022-07-14
+last_modified_at: 2022-07-18
 
 categories:
   - Setup
@@ -151,81 +151,11 @@ $ vim config.conf
 
 powerlevel 테마에서 instant prompt라는 옵션이 있는데, 이걸 verbose에서 off로 바꿔줌. Powerlevel10k는 속도 때문에 비동기로 처리되는 부분이 많은데, 동기 처리되는 작업 때문에 생기는 시동 지연시간을 없애고자 존재하는 옵션임. ASCII 로고 대신 이미지를 쓴다던가 하면 이것 때문에 똑바로 동작하지 않는 경우가 생김.
 
-### Tree
-```sh
-# tree
-$ brew install tree
-```
-→ tree는 뭐... 쓸 일이 있을 것 같아서 설치했음.
-
-### Utility
-```sh
-# scroll-reverser
-$ brew install --cask scroll-reverser
-
-# alt-tab
-$ brew install --cask alt-tab
-
-# hiddenbar
-$ brew install --cask hiddenbar
-
-# rectangle
-$ brew install --cask rectangle
-
-# appcleaner
-$ brew install --cask
-
-#cheatsheet
-$ brew install --cask cheatsheet
-
-# Runcat
-# System Resource Monitoring
-# install on Mac App Store
-
-# iright-mouse
-# Context Menu Controll
-# install on Mac App Store
-```
-→ 사용 편의를 생각해서 몇가지 프로그램들을 설치함. brew를 적극적으로 써보려고 최대한 brew로 설치했음.
-
-```sh
-# keka
-$ brew install --cask keka
-
-# iina
-$ brew install --cask iina
-
-# fliqlo
-$ brew install --cask fliqlo
-
-# Dynamic wallpaper
-# install on Mac App Store
-
-# Naver Whale
-$ brew install --cask naver-whale
-```
-→ 브라우저, 압축 프로그램, 영상 플레이어 같이 뭔가 있어야 할 것 같은 프로그램도 설치함. 나중에 다른 프로그램으로 변경할지도 모르겠음. 일단 추천 받은 프로그램으로 설치함.
-
 ### Programs
+- Homebrew List
+- Mac AppStore
+- Application List
 
-- <span style="color:brown">Note</span>
-    - Notion
-- <span style="color:brown">Dev</span>
-    - VSCode
-- <span style="color:brown">Messenger</span>
-    - Discord
-    - 카카오톡
-
-→ 여기서부터는 혹시나 나중에 OS 재설치 같은 일이 있을 때 참고할 용도로 기록함. 이 리스트가 제일 많이 변할 것 같음.
-
----
-
-## Vim
-### NeoVim
-
-```sh
-# not yet
-```
-→ NeoVim에 플러그인을 잔뜩 설치해놓고 IDE로 사용하지...는 않을 것 같음. 근데 일단 만지작거리고 싶은 마음이 있긴 해서, 나중에 시도해보고 여기에 정리할 생각임.
+→ 설치한 프로그램 리스트를 쓰다보니 매번 변할 때마다 기록하는게 멍청하다고 느껴짐. 위 리스트를 필요할 때 레퍼런스하는게 맞는 것 같음.
 
 ---
