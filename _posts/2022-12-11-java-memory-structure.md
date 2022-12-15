@@ -81,11 +81,13 @@ String도 동적으로 할당되는 객체이기 때문에 당연히 new 연산�
 
 Heap 영역 내부에는 <span style="color:red">**Constant Pool**</span>이 존재합니다. String literal, 그러니까 큰 따옴표를 사용해 String 객체를 만들게 되면 이 곳에 저장된 문자열을 참조하게 됩니다. 그리고 여기에 생성된 문자열과 동일한 문자열을 가진 또 다른 String 객체를 만들게 되면, 그 객체도 이 문자열을 참조하게 됩니다.
 
-다시 말하자면, String literal이 아니라 `new` 연산자를 통해 String 인스턴스를 생성했다면 같은 문자열 값을 가진 String 객체라도 서로 다른 참조값을 가졌겠지만, String literal을 통해 같은 문자열 값을 가진 String 인스턴스를 여러개 만들었다면 모두 같은 문자열을 참조하게 됩니다.
+다시 말하자면, String literal이 아니라 `new` 연산자를 통해 String 인스턴스를 생성했다면 같은 문자열 값을 가진 String 객체라도 서로 다른 참조값을 가졌겠지만, String literal을 통해 같은 문자열 값을 가진 String 인스턴스를 여러개 만들었다면 모두 같은 문자열을 참조하게 됩니다. (`new` 연산자를 사용하더라도, <span style="color:red">**intern**</span> 메소드를 통해 Constant Pool을 바라보게 할 수는 있습니다.)
 
-덧붙이자면, Constant Pool 내부에 저장된 문자열은 수정이 불가능합니다. 따라서 `String str = "앞" + "뒤";`와 같은 연산이 이루어지게 되면, `"앞", "뒤", "앞뒤"`라는 세 가지 String이 Constant Pool 내부에 만들어지게 됩니다. 당연히 이후에 `"앞"`과 `"뒤"`가 쓰일 일이 없다면, GC의 타겟이 될 겁니다. 이런 이유 때문에 <span style="color:red">**StringBuilder**</span>를 사용해 문자열을 다루어야 성능에 문제가 생기지 않습니다.
+덧붙이자면, Constant Pool 내부에 저장된 문자열은 수정이 불가능합니다. 따라서 `String str = "앞" + "뒤";`와 같은 연산이 이루어지게 되면, `"앞", "뒤", "앞뒤"`라는 세 가지 String이 Constant Pool 내부에 만들어지게 됩니다. 당연히 이후에 `"앞"`과 `"뒤"`가 쓰일 일이 없다면, GC의 타겟이 될 겁니다. 이런 이유 때문에 문자열 수정이 빈번하게 일어나는 경우 <span style="color:red">**StringBuilder**</span>를 사용해 문자열을 다루어야 성능에 문제가 생기지 않습니다.
 
-### Visualization
+Java 5 버전 이후로 \+ 연산이 내부적으로 StringBuilder를 사용하긴 하지만, 매번 새 인스턴스를 생성해 append()를 호출하고 String을 반환하기 때문입니다.
+
+### Example Code & Visualization
 
 ![wtf_giphy.gif](https://media.giphy.com/media/xL7PDV9frcudO/giphy.gif){: .align-center}
 
@@ -93,6 +95,77 @@ Heap 영역 내부에는 <span style="color:red">**Constant Pool**</span>이 존
 
 그래서 좀 더 직관적으로 이 내용들을 받아들일 수 있게 간단한 예시 코드와 함께 코드가 한 라인 실행될 때 메모리 할당이 어떻게 이루어지는지 살펴볼 겁니다.
 
-```java
+### Code
 
+```java
+import java.util.ArrayList;
+
+public class Main {
+    public static void main(String[] args) {
+        ArrayList<Comics> myComicsList = new ArrayList<>();
+
+        myComicsList.add(new Comics("Walking Dead", 1));
+        myComicsList.add(new Comics("Walking Dead", 2));
+        myComicsList.add(new Comics(new String("Walking Dead"), 3));
+
+        printMyComics(myComicsList);
+    }
+
+    public static void printMyComics(ArrayList<Comics> _comicsList) {
+        _comicsList.forEach(_rec -> {
+            _rec.setTitle(_rec.getTitle() + " " + _rec.getEpisode());
+            System.out.println(_rec.getTitle());
+        });
+    }
+}
+
+class Comics {
+    private String title;
+    private int episode;
+
+    // constructor
+    public Comics(String _title, int _episode) {
+        this.setTitle(_title);
+        this.setEpisode(_episode);
+    }
+
+    // getter & setter
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public int getEpisode() { return episode; }
+    public void setEpisode(int episode) { this.episode = episode; }
+}
 ```
+
+↪ 위와 같은 코드가 실행될 때의 메모리를 살펴보겠습니다.
+
+### Visualization
+
+![stack_and_heap_1.jpg](/assets/images/posts/2022-12-11-java-memory-structure/stack_and_heap_1.jpg){: .align-center}
+
+↪ 엔트리 포인트인 main함수의 parameter 변수를 stack에 저장하면서 프로세스가 시작됩니다. 한 단계씩 그림을 나누어 표현하면 지나치게 글이 길어질 것 같아 몇 단계씩 묶어 표현하겠습니다.
+
+![stack_and_heap_2.jpg](/assets/images/posts/2022-12-11-java-memory-structure/stack_and_heap_2.jpg){: .align-center}
+
+1. 지역 변수인 myComicsList는 Comics type의 ArrayList 인스턴스를 생성해 주소값을 저장합니다.
+2. Comics의 새로운 인스턴스가 생성되고, "Walking Dead"라는 문자열이 <span style="color:red">**Constant Pool**</span>에 없기 때문에 새롭게 할당되어 Comics의 property인 title이 이를 바라봅니다.  
+ArrayList에 첫번째 요소가 이번에 생성된 Comics 인스턴스를 바라봅니다.
+3. Comics의 새로운 인스턴스가 생성되고, "Walking Dead"라는 문자열이 <span style="color:red">**Constant Pool**</span>에 있기 때문에 이번에 생성된 Comics의 property인 title이 이를 바라봅니다.  
+ArrayList에 첫번째 요소가 이번에 생성된 Comics 인스턴스를 바라봅니다.
+
+![stack_and_heap_3.jpg](/assets/images/posts/2022-12-11-java-memory-structure/stack_and_heap_3.jpg){: .align-center}
+
+4. `new` 키워드를 통해 <span style="color:red">**String 인스턴스**</span>가 생성됩니다. Comics의 새로운 인스턴스가 생성되어 property인 title이 이 String 인스턴스를 바라봅니다.
+
+![stack_and_heap_4.jpg](/assets/images/posts/2022-12-11-java-memory-structure/stack_and_heap_4.jpg){: .align-center}
+
+5. printMyComics 메소드를 호출하면서 parameter _comicsList가 Stack에 push 되고, myComicsList가 바라보던 인스턴스를 바라봅니다.
+6. ArrayList의 forEach 메소드 내부에서 화살표 함수로 정의한 익명함수의 parameter _rec가 _comicsList가 바라보는 ArrayList의 첫 번째 원소를 바라봅니다.  
+"Walking Dead 1"이라는 문자열이 <span style="color:red">**Constant Pool**</span>에 없기 때문에 새롭게 할당되어 Comics의 property인 title이 이를 바라봅니다.
+7. ArrayList의 forEach 메소드 내부에서 화살표 함수로 정의한 익명함수의 parameter _rec가 _comicsList가 바라보는 ArrayList의 두 번째 원소를 바라봅니다.  
+"Walking Dead 2"이라는 문자열이 <span style="color:red">**Constant Pool**</span>에 없기 때문에 새롭게 할당되어 Comics의 property인 title이 이를 바라봅니다.
+8. ArrayList의 forEach 메소드 내부에서 화살표 함수로 정의한 익명함수의 parameter _rec가 _comicsList가 바라보는 ArrayList의 세 번째 원소를 바라봅니다.  
+<span style="color:black;background-color:#ff6666">String의 더하기 연산에 쓰이고 있는 피연산자가 모두 **literal**이 아니기 때문에, **Constant Pool**에는 변화가 없습니다.</span>  
+Comics의 property인 title이 바라보던 String 인스턴스의 값을 "Walking Dead 3"로 저장합니다.
+
+---
