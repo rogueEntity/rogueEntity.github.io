@@ -147,29 +147,29 @@ class Comics {
 
 ![stack_and_heap_2.jpg](/assets/images/posts/2022-12-11-java-memory-structure/stack_and_heap_2.jpg){: .align-center}
 
-1\. 지역 변수인 myComicsList는 Comics type의 ArrayList 인스턴스를 생성해 주소값을 저장합니다.
+**1\.** 지역 변수인 myComicsList는 Comics type의 ArrayList 인스턴스를 생성해 주소값을 저장합니다.
 
-2\. Comics의 새로운 인스턴스가 생성되고, "Walking Dead"라는 문자열이 <span style="color:red">**Constant Pool**</span>에 없기 때문에 새롭게 할당되어 Comics의 property인 title이 이를 바라봅니다.  
+**2\.** Comics의 새로운 인스턴스가 생성되고, "Walking Dead"라는 문자열이 <span style="color:red">**Constant Pool**</span>에 없기 때문에 새롭게 할당되어 Comics의 property인 title이 이를 바라봅니다.  
 ArrayList에 첫번째 요소가 이번에 생성된 Comics 인스턴스를 바라봅니다.
 
-3\. Comics의 새로운 인스턴스가 생성되고, "Walking Dead"라는 문자열이 <span style="color:red">**Constant Pool**</span>에 있기 때문에 이번에 생성된 Comics의 property인 title이 이를 바라봅니다.  
+**3\.** Comics의 새로운 인스턴스가 생성되고, "Walking Dead"라는 문자열이 <span style="color:red">**Constant Pool**</span>에 있기 때문에 이번에 생성된 Comics의 property인 title이 이를 바라봅니다.  
 ArrayList에 첫번째 요소가 이번에 생성된 Comics 인스턴스를 바라봅니다.
 
 ![stack_and_heap_3.jpg](/assets/images/posts/2022-12-11-java-memory-structure/stack_and_heap_3.jpg){: .align-center}
 
-4\. `new` 키워드를 통해 <span style="color:red">**String 인스턴스**</span>가 생성됩니다. Comics의 새로운 인스턴스가 생성되어 property인 title이 이 String 인스턴스를 바라봅니다.
+**4\.** `new` 키워드를 통해 <span style="color:red">**String 인스턴스**</span>가 생성됩니다. Comics의 새로운 인스턴스가 생성되어 property인 title이 이 String 인스턴스를 바라봅니다.
 
 ![stack_and_heap_4.jpg](/assets/images/posts/2022-12-11-java-memory-structure/stack_and_heap_4.jpg){: .align-center}
 
-5\. printMyComics 메소드를 호출하면서 parameter _comicsList가 Stack에 push 되고, myComicsList가 바라보던 인스턴스를 바라봅니다.
+**5\.** printMyComics 메소드를 호출하면서 parameter _comicsList가 Stack에 push 되고, myComicsList가 바라보던 인스턴스를 바라봅니다.
 
-6\. ArrayList의 forEach 메소드 내부에서 화살표 함수로 정의한 익명함수의 parameter _rec가 _comicsList가 바라보는 ArrayList의 첫 번째 원소를 바라봅니다.  
+**6\.** ArrayList의 forEach 메소드 내부에서 화살표 함수로 정의한 익명함수의 parameter _rec가 _comicsList가 바라보는 ArrayList의 첫 번째 원소를 바라봅니다.  
 "Walking Dead 1"이라는 문자열이 <span style="color:red">**Constant Pool**</span>에 없기 때문에 새롭게 할당되어 Comics의 property인 title이 이를 바라봅니다.
 
-7\. ArrayList의 forEach 메소드 내부에서 화살표 함수로 정의한 익명함수의 parameter _rec가 _comicsList가 바라보는 ArrayList의 두 번째 원소를 바라봅니다.  
+**7\.** ArrayList의 forEach 메소드 내부에서 화살표 함수로 정의한 익명함수의 parameter _rec가 _comicsList가 바라보는 ArrayList의 두 번째 원소를 바라봅니다.  
 "Walking Dead 2"이라는 문자열이 <span style="color:red">**Constant Pool**</span>에 없기 때문에 새롭게 할당되어 Comics의 property인 title이 이를 바라봅니다.
 
-8\. ArrayList의 forEach 메소드 내부에서 화살표 함수로 정의한 익명함수의 parameter _rec가 _comicsList가 바라보는 ArrayList의 세 번째 원소를 바라봅니다.  
+**8\.** ArrayList의 forEach 메소드 내부에서 화살표 함수로 정의한 익명함수의 parameter _rec가 _comicsList가 바라보는 ArrayList의 세 번째 원소를 바라봅니다.  
 <span style="color:black;background-color:#ff6666">String의 더하기 연산에 쓰이고 있는 피연산자가 모두 **literal**이 아니기 때문에, **Constant Pool**에는 변화가 없습니다.</span>  
 Comics의 property인 title이 바라보던 String 인스턴스의 값을 "Walking Dead 3"로 저장합니다.
 
