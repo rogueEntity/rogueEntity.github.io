@@ -37,7 +37,7 @@ toc_sticky: true
 
 이 포스트에서 자세히 설명하는 내용에서 제외되는 부분인 PC Register와 Native Method Stack에 대해서는 간략히 적고 넘어가도록 하겠습니다.
 
-- <span style="color:red">**PC Register**</span>: Thread에서 실행중인 메서드 중  실행중인 instruction 주소입니다. instruction이란 Class가 변환된 바이트 코드의 각 라인을 의미합니다.
+- <span style="color:red">**PC Register**</span>: Thread에서 실행중인 메서드 중 실행중인 instruction 주소입니다. instruction이란 Class가 변환된 바이트 코드의 각 라인을 의미합니다.
 - <span style="color:red">**Native Method Stack**</span>: Java가 아닌 C/C++와 같은 native programming language로 작성한 메소드를 호출할 때 사용되는 영역입니다.
 
 ### Shared Area
@@ -46,7 +46,7 @@ toc_sticky: true
 
 ↪ 앞선 JVM의 전체 구조 중 공유 메모리 영역에 대한 그림입니다. 크게는 <span style="color:red">**Heap**</span> 영역과 <span style="color:red">**Metaspace**</span> 영역으로 볼 수 있는데, Java 8 버전 이전에는 Metaspace라는 영역은 없었습니다. 기존에 있던 것은 Permanent Area인데, Class의 Meta 정보나 Method의 Meta 정보, Static 변수와 상수 정보들이 저장되었던 공간입니다.
 
-Java 8  버전부터는 이 Permanent Area(PermGen)가 Metaspace로 대체되고, Static 변수와 상수 정보들은 Heap 영역에 저장하도록 변경되었습니다. 고정된 크기가 할당되는 PermGen에 개발자가 Static 변수와 상수들을 저장하면서, OOM(Out of Memory) 문제가 종종 발생하곤 하는 구조적 문제를 해결하기 위해 이러한 변경이 일어나게 되었습니다. 따라서 동적인 새롭게 생겨난 Metaspace는 JVM이 관리하는 Heap 영역이 아닌, OS 레벨에서 관리하는 Native Memory Area로 취급하게 됩니다.
+Java 8 버전부터는 이 Permanent Area(PermGen)가 Metaspace로 대체되고, Static 변수와 상수 정보들은 Heap 영역에 저장하도록 변경되었습니다. 고정된 크기가 할당되는 PermGen에 개발자가 Static 변수와 상수들을 저장하면서, OOM(Out of Memory) 문제가 종종 발생하곤 하는 구조적 문제를 해결하기 위해 이러한 변경이 일어나게 되었습니다. 따라서 동적인 새롭게 생겨난 Metaspace는 JVM이 관리하는 Heap 영역이 아닌, OS 레벨에서 관리하는 Native Memory Area로 취급하게 됩니다.
 
 ### Heap & GC
 
