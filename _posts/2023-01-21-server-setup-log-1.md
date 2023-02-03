@@ -262,3 +262,5 @@ $ sudo systemctl restart sshd
 설치한 Google Authenticator를 SSH 접속 시 사용하기 위해서 위와 같이 설정해줍니다. 이제 SSH 접속을 하기 위해서는 OTP 인증이 필요하게 되었습니다.
 
 여기까지가 제가 개인 서버 구축을 진행하면서 진행한 SSH 보안 설정이었습니다. 부디 별 문제없이 서버를 잘 굴릴 수 있기를 바랍니다.
+
+---
