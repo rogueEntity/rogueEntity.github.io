@@ -259,7 +259,7 @@ $ nvidia-smi
 
 앞으로도 authelia와 같은 서버 관리용 서비스나, qbittorrent, tandoor, piwigo, wireguard 같이 서버에서 활용하기 좋은 서비스들을 관심이 생기는대로 컨테이너로 띄워 여러 방법으로 활용해볼 생각입니다.
 
-reddit이나 서버포럼 같은 곳들에서 보이는 서버 랙이나 스위치 같은 장비도 언젠가는 쓰게 될지도 모르겠네요.
+reddit이나 서버포럼 같은 곳들에서 보이는 서버 랙이나 스위치 같은 장비도 언젠가는 쓰게 될지도 모르겠네요. 당장은 서버를 사용하며 겪었던 soft lockup 이슈를 겪으면서, 하드웨어 watchdog 장비를 구해 WOL 설정과 함께 사용해보는걸 다음 목표로 생각하고 있습니다.
 
 ![server_01.jpg](/assets/images/posts/2023-02-03-server-setup-log-2/server_01.jpg){: .align-center}
 ![server_02.jpg](/assets/images/posts/2023-02-03-server-setup-log-2/server_02.jpg){: .align-center}
