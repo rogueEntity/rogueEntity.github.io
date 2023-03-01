@@ -173,10 +173,95 @@ SSL도 바로 발급해두었던 인증서를 선택만 해주면 됩니다. 다
 
 ---
 
-## Services
+## Prevent being POTATO
+### Suspend
+
+![suspend_giphy.gif](https://media.giphy.com/media/HitAab11PjQZO/giphy.gif){: .align-center}
+
+↪ 처음 서버를 세팅하고 나서 몇일동안 빈번하게 원격지에서 접속이 안 되는 기현상이 발생했습니다. 딱히 서버가 크래시가 나거나 전원이 나간 것도 아니었는데 무슨 문제인지 한참 서치를 해봤습니다. 결론은 그냥 일정 시간동안 입력이 없어 대기모드로 전환되었다는 것이었습니다. 아니 Ubuntu 'Server'인데 대기모드가 디폴트라니...
+
+```bash
+# check status
+# Loaded: loaded
+$ sudo systemctl status sleep.target suspend.target hibernate.target hybrid-sleep.target
+# disable suspend
+$ sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+# check status again
+# Loaded: masked
+$ sudo systemctl status sleep.target suspend.target hibernate.target hybrid-sleep.target
+```
+
+위와 같은 command로 대기 모드로 진입하는 것을 막아주는 설정을 해주고 재부팅을 합니다. 이후로는 대기모드에 들어가지 않고 계속 idle 상태로 잘 사용 중입니다.
+
+### Soft Lockup
+
+![soft_lockup_01.jpg](/assets/images/posts/2023-02-03-server-setup-log-2/soft_lockup_01.jpg){: .align-center}
+
+↪ 그렇게 또 몇일간 행복한 서버 운영을 하던 중... 돌연 서버로부터 응답이 없습니다. 이번엔 또 무슨 문젠가 깊은 인내의 시간을 보내고 집에 돌아와 서치를 반복했습니다. 서버에서 띄운 로그에는 `kernel:NMI watchdog: BUG: soft lockup - CPU#3 stuck for 1332s!` 이렇게 생겨먹은 서버의 단말마가 잔뜩 도배되어 있었습니다.
+
+서치 결과, 가장 의심되는 항목은 그래픽카드와 Ubuntu OS 내장 nouveau 드라이버의 충돌이었습니다. 그래서 일단 nouveau 드라이버를 비활성화하고, nvidia driver를 설치해본 상태입니다. 실제로 이 원인 때문에 발생한 에러라 다음 치료제가 주효할지는 좀 더 긴 시간을 두고 지켜봐야 할 것 같습니다.
+
+```bash
+# update & upgrade before install
+$ sudo apt update && sudo apt upgrade -y
+# install nvidia-driver
+$ sudo apt install -y ubuntu-drivers-common
+# check nvidia driver list
+$ ubuntu-drivers devices
+```
+
+nvidia-driver를 설치하고 설치 가능한 드라이버 리스트를 확인했습니다. 이 중에서 `recommended`가 붙어있는 드라이버를 설치했습니다.
+
+```bash
+# install recommended driver
+$ sudo apt-get install nvidia-driver-525
+```
+
+우려와는 달리 설치 중 시간은 좀 걸렸지만, 이슈가 발생하지는 않았습니다. 이제, 기존에 동작하고 있던 nouveau 드라이버를 비활성화 시켜줘야 했습니다.
+
+```bash
+# make a new blacklist to disable the driver
+# paste these two lines to the conf file
+# 
+# blacklist nouveau
+# options nouveau modeset=0
+$ sudo vim /etc/modprobe.d/blacklist-nouveau.conf
+# apply configuration
+$ sudo update-initramfs -u
+# reboot
+$ sudo reboot
+
+# check graphic driver installed
+$ nvidia-smi
+```
 
 ---
 
 ## Epilogue
+
+![flame_01.jpg](/assets/images/posts/2023-02-03-server-setup-log-2/flame_01.jpg){: .align-center}
+
+![plex_01.jpg](/assets/images/posts/2023-02-03-server-setup-log-2/plex_01.jpg){: .align-center}
+
+![komga_01.jpg.jpg](/assets/images/posts/2023-02-03-server-setup-log-2/komga_01.jpg){: .align-center}
+
+![kavita_01.jpg.jpg](/assets/images/posts/2023-02-03-server-setup-log-2/kavita_01.jpg){: .align-center}
+
+![nextcloud_01.jpg.jpg](/assets/images/posts/2023-02-03-server-setup-log-2/nextcloud_01.jpg){: .align-center}
+
+![zomboid_01.jpg.jpg](/assets/images/posts/2023-02-03-server-setup-log-2/zomboid_01.jpg){: .align-center}
+
+![zomboid_02.jpg.jpg](/assets/images/posts/2023-02-03-server-setup-log-2/zomboid_02.jpg){: .align-center}
+
+
+
+↪ 서버 원격 관리를 편하게 하기 위한 서비스들도 몇가지 사용 중이고 미디어 서버로 활용하기 위한 서비스들도 있고, 위의 서버 대시보드에서는 보이지 않지만 dedicated 게임 서버로도 활용 중입니다. 물론 토이 프로젝트의 DB 서버나 CICD 서버, 이미지 서버 등으로의 활용도 하는 중입니다.
+
+앞으로도 authelia와 같은 서버 관리용 서비스나, qbittorrent, tandoor, piwigo, wireguard 같이 서버에서 활용하기 좋은 서비스들을 관심이 생기는대로 컨테이너로 띄워 여러 방법으로 활용해볼 생각입니다.
+
+reddit이나 서버포럼 같은 곳들에서 보이는 서버 랙이나 스위치 같은 장비도 언젠가는 쓰게 될지도 모르겠네요.
+
+![server_01.jpg](/assets/images/posts/2023-02-03-server-setup-log-2/server_01.jpg){: .align-center}
+![server_02.jpg](/assets/images/posts/2023-02-03-server-setup-log-2/server_02.jpg){: .align-center}
 
 ---
