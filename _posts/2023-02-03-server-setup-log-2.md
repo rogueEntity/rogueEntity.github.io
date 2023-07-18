@@ -178,7 +178,7 @@ SSL도 바로 발급해두었던 인증서를 선택만 해주면 됩니다. 다
 
 ![suspend_giphy.gif](https://media.giphy.com/media/HitAab11PjQZO/giphy.gif){: .align-center}
 
-↪ 처음 서버를 세팅하고 나서 몇일동안 빈번하게 원격지에서 접속이 안 되는 기현상이 발생했습니다. 딱히 서버가 크래시가 나거나 전원이 나간 것도 아니었는데 무슨 문제인지 한참 서치를 해봤습니다. 결론은 그냥 일정 시간동안 입력이 없어 대기모드로 전환되었다는 것이었습니다. 아니 Ubuntu 'Server'인데 대기모드가 디폴트라니...
+↪ 처음 서버를 세팅하고 나서 며칠 동안 빈번하게 원격지에서 접속이 안 되는 기현상이 발생했습니다. 딱히 서버가 크래시가 나거나 전원이 나간 것도 아니었는데 무슨 문제인지 한참 서치를 해봤습니다. 결론은 그냥 일정 시간동안 입력이 없어 대기모드로 전환되었다는 것이었습니다. 아니 Ubuntu 'Server'인데 대기모드가 디폴트라니...
 
 ```bash
 # check status
@@ -197,9 +197,9 @@ $ sudo systemctl status sleep.target suspend.target hibernate.target hybrid-slee
 
 ![soft_lockup_01.jpg](/assets/images/posts/2023-02-03-server-setup-log-2/soft_lockup_01.jpg){: .align-center}
 
-↪ 그렇게 또 몇일간 행복한 서버 운영을 하던 중... 돌연 서버로부터 응답이 없습니다. 이번엔 또 무슨 문젠가 깊은 인내의 시간을 보내고 집에 돌아와 서치를 반복했습니다. 서버에서 띄운 로그에는 `kernel:NMI watchdog: BUG: soft lockup - CPU#3 stuck for 1332s!` 이렇게 생겨먹은 서버의 단말마가 잔뜩 도배되어 있었습니다.
+↪ 그렇게 또 행복한 서버 운영을 하던 중... 돌연 서버로부터 응답이 없습니다. 이번엔 또 무슨 문젠가 깊은 인내의 시간을 보내고 집에 돌아와 서치를 반복했습니다. 서버에서 띄운 로그에는 `kernel:NMI watchdog: BUG: soft lockup - CPU#3 stuck for 1332s!` 이렇게 생겨먹은 서버의 단말마가 잔뜩 도배되어 있었습니다.
 
-서치 결과, 가장 의심되는 항목은 그래픽카드와 Ubuntu OS 내장 nouveau 드라이버의 충돌이었습니다. 그래서 일단 nouveau 드라이버를 비활성화하고, nvidia driver를 설치해본 상태입니다. 실제로 이 원인 때문에 발생한 에러라 다음 치료제가 주효할지는 좀 더 긴 시간을 두고 지켜봐야 할 것 같습니다.
+~~서치 결과, 가장 의심되는 항목은 그래픽카드와 Ubuntu OS 내장 nouveau 드라이버의 충돌이었습니다. 그래서 일단 nouveau 드라이버를 비활성화하고, nvidia driver를 설치해본 상태입니다. 실제로 이 원인 때문에 발생한 에러라 다음 치료제가 주효할지는 좀 더 긴 시간을 두고 지켜봐야 할 것 같습니다.~~
 
 ```bash
 # update & upgrade before install
@@ -210,14 +210,14 @@ $ sudo apt install -y ubuntu-drivers-common
 $ ubuntu-drivers devices
 ```
 
-nvidia-driver를 설치하고 설치 가능한 드라이버 리스트를 확인했습니다. 이 중에서 `recommended`가 붙어있는 드라이버를 설치했습니다.
+~~nvidia-driver를 설치하고 설치 가능한 드라이버 리스트를 확인했습니다. 이 중에서 `recommended`가 붙어있는 드라이버를 설치했습니다.~~
 
 ```bash
 # install recommended driver
 $ sudo apt-get install nvidia-driver-525
 ```
 
-우려와는 달리 설치 중 시간은 좀 걸렸지만, 이슈가 발생하지는 않았습니다. 이제, 기존에 동작하고 있던 nouveau 드라이버를 비활성화 시켜줘야 했습니다.
+~~우려와는 달리 설치 중 시간은 좀 걸렸지만, 이슈가 발생하지는 않았습니다. 이제, 기존에 동작하고 있던 nouveau 드라이버를 비활성화 시켜줘야 했습니다.~~
 
 ```bash
 # make a new blacklist to disable the driver
@@ -234,6 +234,8 @@ $ sudo reboot
 # check graphic driver installed
 $ nvidia-smi
 ```
+
+해당 이슈는 2023년 6월 말, 노후화된 멀티탭 때문인 것으로 잠정 결론이 지어졌습니다...
 
 ---
 
