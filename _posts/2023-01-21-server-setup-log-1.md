@@ -78,7 +78,7 @@ Think about turning on your PC or MacBook on your way home.
 
 The above security settings are the most basic list to be set up.
 
-### SSH 포트 변경
+### SSH Port
 
 ```bash
 # /etc/ssh/sshd_config
